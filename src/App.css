@@ -1,0 +1,35 @@
+:root {
+  --bg-primary-light: white;
+  --bg-primary-dark: #070815;
+
+  --logo-dark: #f6f1d5;
+
+  --primary-dark: #bdbdcd;
+}
+
+.light-theme {
+  --text-primary: var(--text-primary-light);
+  --text-secondary: var(--text-secondary-light);
+  --bg-primary: var(--bg-primary-light);
+  --bg-secondary: var(--bg-secondary-light);
+  --bg-navbar: var(--bg-navbar-light);
+}
+
+.dark-theme {
+  --bg-primary: var(--bg-primary-dark);
+  --logo: var(--logo);
+  --text-primary: var(--text-primary-dark);
+  --text-secondary: var(--text-secondary-dark);
+  --primary: var(--primary-dark);
+  --secondary: var(--secondary-dark);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  background-color: var(--bg-primary);
+  min-height: 100vh;
+}
