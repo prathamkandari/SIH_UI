@@ -13,7 +13,6 @@ def create_database_graph(database_name, conn, table_vector_map):
     for table in table_vector_map.keys():
         table_label = table.replace(" ", "_").capitalize()
         
-        # Create a table node
         conn.query(f"CREATE (t:Table {{name: $table_name}})", {"table_name": table})
 
  
