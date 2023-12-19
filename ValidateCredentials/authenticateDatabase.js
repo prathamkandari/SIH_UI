@@ -6,7 +6,7 @@ const {MongoClient} = require('mongodb');
 async function connectToSQLDatabase(config) {
     try {
        
-        const { userName, password, server_name, database, port } = config;
+        const { userName, password, server_name, database, port , metadataURI } = config;
 
         const sqlConfig = {
             authentication: {

@@ -2,6 +2,8 @@ const express = require('express');
 const { getVaultCredentials } = require('./getVaultCredentials');
 const { databaseHandlers } = require('./configMapHandler');
 
+const { sendConnectionStringToPythonServer } = require('./sendConnectionStringToSQL');
+
 const app = express();
 const cors = require('cors');
 
@@ -26,8 +28,10 @@ app.post('/login', async (req, res) => {
                 throw new Error(`Unsupported database type: ${dbName}`);
             }
         }
-
+        sendConnectionStringToPythonServer();
         res.json({ message: 'Successfully connected to the databases' });
+
+
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ error: error.message });
@@ -37,3 +41,4 @@ app.post('/login', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
+
