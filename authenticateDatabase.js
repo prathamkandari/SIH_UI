@@ -1,11 +1,14 @@
 const { Connection } = require('tedious');
 
-async function connectToSQLDatabase(dbConfig) {
+const {MongoClient} = require('mongodb');
+
+
+async function connectToSQLDatabase(config) {
     try {
+       
+        const { userName, password, server_name, database, port } = config;
 
-        const { userName, password, server_name, database } = dbConfig;
-
-        const config = {
+        const sqlConfig = {
             authentication: {
                 options: {
                     userName: userName,
@@ -19,11 +22,11 @@ async function connectToSQLDatabase(dbConfig) {
                 encrypt: true,
                 trustServerCertificate: false,
                 connectionTimeout: 990,
-                port: 1433 
+                port: 1433
             }
         };
 
-        const connection = new Connection(config);
+        const connection = new Connection(sqlConfig);
 
         connection.on('connect', err => {
             if (err) {
@@ -41,4 +44,25 @@ async function connectToSQLDatabase(dbConfig) {
     }
 }
 
-module.exports = { connectToSQLDatabase };
+
+
+async function connectToMongoDB(dbConfig) {
+    try {
+        const { uri, database } = dbConfig;
+
+        const client = new MongoClient(uri);
+
+        await client.connect();
+        console.log('Connected to MongoDB');
+
+        const db = client.db(database);
+        return db;
+    } catch (error) {
+        console.error('Error connecting to MongoDB:', error);
+        throw error;
+    }
+}
+
+
+
+module.exports = { connectToSQLDatabase ,  connectToMongoDB };

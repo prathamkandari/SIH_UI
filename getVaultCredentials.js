@@ -9,11 +9,16 @@ async function getVaultCredentials(vaultUri, secretName) {
 
     try {
         const secret = await secretClient.getSecret(secretName);
+
+        // console.log(secret);
         return secret;
     } catch (error) {
         console.error('Error fetching secret from Azure Key Vault:', error);
         throw error;
     }
+
 }
+
+
 
 module.exports = { getVaultCredentials };

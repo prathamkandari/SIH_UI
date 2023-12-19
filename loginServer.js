@@ -1,6 +1,6 @@
 const express = require('express');
-const { connectToSQLDatabase } = require('./authenticateDatabase');
 const { getVaultCredentials } = require('./getVaultCredentials');
+const { databaseHandlers } = require('./configMapHandler');
 
 const app = express();
 const cors = require('cors');
@@ -14,13 +14,20 @@ app.post('/login', async (req, res) => {
     const { vaultUri, secretName } = req.body;
 
     try {
-      
         const secret = await getVaultCredentials(vaultUri, secretName);
-        const dbConfig = JSON.parse(secret.value); 
+        const dbConfig = JSON.parse(secret.value);
 
-        const connection = await connectToSQLDatabase(dbConfig);
+        const dbConnections = {};
 
-        res.json({ message: 'Successfully connected to the database' });
+        for (const [dbName, config] of Object.entries(dbConfig)) {
+            if (databaseHandlers[dbName]) {
+                dbConnections[dbName] = await databaseHandlers[dbName](config);
+            } else {
+                throw new Error(`Unsupported database type: ${dbName}`);
+            }
+        }
+
+        res.json({ message: 'Successfully connected to the databases' });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ error: error.message });
