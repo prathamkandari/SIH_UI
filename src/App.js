@@ -1,5 +1,7 @@
-import React, {useContext} from 'react';
+// App.js
+import React, { useContext } from 'react';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/header';
 import Home from './pages/Home/home';
 import { VaultAuth } from './pages/Login/vaultAuth';
@@ -10,7 +12,12 @@ function App() {
 
   return (
     <div className={`App ${theme}`}>
-      <VaultAuth />
+      <Router>
+        <Routes>
+          <Route path="/" element={<VaultAuth />} />
+          <Route path="/home" element={<Home />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
