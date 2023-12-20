@@ -19,8 +19,6 @@ database_name = "SQL_Database"
 neo4j_conn = Neo4jConnection(uri, user, password)
 
 
-import  subprocess
-
 app = Flask(__name__)
 
 @app.route('/connect', methods=['POST'])
@@ -33,17 +31,20 @@ def connect_to_db():
     
         conn = connect_to_sql_database(conn_str)
         
-        get_table_names(conn)
+        # get_table_names(conn)
 
         yamlMap = fetch_and_parse_yaml_from_blob(metadataURI)
 
-        create_database_graph(database_name,neo4j_conn, yamlMap)
+        create_database_graph(database_name,neo4j_conn,conn, yamlMap)
 
         return "Connected to database successfully", 200
     except pyodbc.Error as e:
         return f"Database error: {e}", 500
     finally:
         conn.close()
+        if neo4j_conn:
+            neo4j_conn.close()
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

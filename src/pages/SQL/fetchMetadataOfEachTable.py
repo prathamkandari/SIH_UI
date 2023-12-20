@@ -5,9 +5,9 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 import os
 
-openai.api_key = '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'
+openai.api_key = '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'
 
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = "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"
 
 def generate_summary(input_text):
             prompt = f"Summarize the following YAML data:\n\n{input_text}\n\nSummary:"

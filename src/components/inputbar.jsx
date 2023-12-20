@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/system';
-import { TextField, Paper, IconButton, InputAdornment } from '@mui/material';
+import { TextField, Paper, IconButton, InputAdornment, Dialog, DialogTitle } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import './inputbar.css';
 
@@ -19,18 +19,39 @@ const StyledTextField = styled(TextField)({
     },
   },
 });
+const InputBar = ({ placeholder, onSubmit }) => {
+  const [inputValue, setInputValue] = useState('');
+  const [responseData, setResponseData] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // State to control popup visibility
 
-const InputBar = ({placeholder = 'Hello, I am Unity. Ask me anything regarding your database cluster.', onSubmit }) => {
+  const handleSubmit = async () => {
+    if (inputValue) {
+      try {
+        const response = await fetch('http://localhost:5454/find-table', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ query: inputValue }),
+        });
 
-  const handleSubmit = () => {
-    if (onSubmit) {
-      onSubmit();
+        const data = await response.json();
+        setResponseData(data);
+        setIsPopupOpen(true); // Open the popup on successful data fetch
+      } catch (error) {
+        console.error('Error:', error);
+        setResponseData({ error: 'An error occurred' });
+        setIsPopupOpen(true); // Open the popup also in case of error
+      }
     }
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false); // Function to close the popup
   };
 
   return (
     <Paper
-      // className='gradient-border' // Add className prop to Paper component
       sx={{
         zIndex: '10',
         position: 'relative',
@@ -49,6 +70,8 @@ const InputBar = ({placeholder = 'Hello, I am Unity. Ask me anything regarding y
     >
       <StyledTextField
         placeholder={placeholder}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
@@ -59,6 +82,18 @@ const InputBar = ({placeholder = 'Hello, I am Unity. Ask me anything regarding y
           ),
         }}
       />
+        <Dialog open={isPopupOpen} onClose={handleClosePopup}>
+        {/* <DialogTitle>Response</DialogTitle> */}
+        <div style={{ padding: 20 }}>
+          {responseData && responseData.error ? (
+            <p style={{ color: 'red' }}>{responseData.error}</p>
+          ) : (
+            responseData && responseData.closest_nodes && responseData.closest_nodes.map((node, index) => (
+              <p key={index}>{node}</p> 
+            ))
+          )}
+        </div>
+      </Dialog>
     </Paper>
   );
 };
