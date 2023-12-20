@@ -30,8 +30,10 @@ export function VaultAuth() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const vaultUrl = data.get('email');
-        const vaultName = data.get('password');
+        const vaultUrl = document.getElementById('vaulturl').value;
+        const vaultName = document.getElementById('vaultname').value;
+
+        console.log(vaultUrl);
 
         setLoading(true);
         setError(false);
@@ -45,7 +47,7 @@ export function VaultAuth() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ vaultUri: vaultUrl, secretName: vaultName }),
+                body: JSON.stringify({vaultUri: vaultUrl, secretName: vaultName }),
             });
 
             if (response.ok) {
@@ -93,9 +95,10 @@ export function VaultAuth() {
                 >
                     {/* <h2>Enter Vault Credentials</h2> */}
                     <Box id="loginContainer" component="form" onSubmit={handleSubmit}>
-                    <h2>Enter Vault Credentials</h2>
-                        <div classname="userInput" id="userInput">
+                        <h2>Enter Vault Credentials</h2>
+                        <div className="userInput" id="userInput">
                             <TextField
+                                name="vaulturl"
                                 id="vaulturl"
                                 label={
                                     <Typography style={{ fontSize: '18px', color: '#bdbdcd', fontWeight: '500', }}>
@@ -123,6 +126,7 @@ export function VaultAuth() {
                         </div>
                         <div className="userInput" id="userInput">
                             <TextField
+                                name="vaultname"
                                 id="vaultname"
                                 label={
                                     <Typography style={{ fontSize: '18px', color: '#bdbdcd', fontWeight: '500' }}>

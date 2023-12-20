@@ -5,6 +5,7 @@ const { SecretClient } = require('@azure/keyvault-secrets');
 
 async function getVaultCredentials(vaultUri, secretName) {
     const credential = new DefaultAzureCredential();
+    // vaultUri = "https://sih-data.vault.azure.net/"
     const secretClient = new SecretClient(vaultUri, credential);
 
     try {

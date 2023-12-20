@@ -1,0 +1,20 @@
+{
+    "DatabaseName1": {
+       "TableName1": {
+          "ColumnsName": [
+             "staffName",
+             "staffId"
+          ],
+          "Description": "this table stores staff's data."
+       }
+    },
+    "DatabaseName2": {
+       "TableName1": {
+          "ColumnsName": [
+             "customerName",
+             "customerId"
+          ],
+          "Description": "this  table stores customer;s data."
+       }
+    }
+ }

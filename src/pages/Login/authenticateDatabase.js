@@ -1,12 +1,12 @@
 const { Connection } = require('tedious');
 
-const { MongoClient } = require('mongodb');
+const {MongoClient} = require('mongodb');
 
 
 async function connectToSQLDatabase(config) {
     try {
-
-        const { userName, password, server_name, database, port } = config;
+       
+        const { userName, password, server_name, database, port , metadataURI } = config;
 
         const sqlConfig = {
             authentication: {
@@ -65,4 +65,4 @@ async function connectToMongoDB(dbConfig) {
 
 
 
-module.exports = { connectToSQLDatabase, connectToMongoDB };
+module.exports = { connectToSQLDatabase ,  connectToMongoDB };

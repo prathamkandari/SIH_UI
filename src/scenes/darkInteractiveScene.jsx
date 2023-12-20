@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react';
 import Spline from '@splinetool/react-spline';
 
-export default function DarkInteractiveScene() {
+const DarkInteractiveScene = () => {
 
   const canvasStyles = {
     position: 'absolute',
@@ -13,9 +12,11 @@ export default function DarkInteractiveScene() {
   };
 
   return (
-    <Spline
+    <Spline 
       scene="https://prod.spline.design/87ePDZZnPL0zDCrF/scene.splinecode"
       style={canvasStyles}
     />
   );
 }
+
+export default DarkInteractiveScene;

@@ -1,7 +1,6 @@
 const fetch = require('node-fetch');
 
-async function sendConnectionStringToPythonServer(){
-    const conn_str = `Driver={ODBC Driver 18 for SQL Server};Server=tcp:sihadmin.database.windows.net,1433;Database=sih;Uid=sihadmin;Pwd=sih@12345;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=990;`;
+async function sendConnectionStringToPythonServer(conn_str, metadataURI) {
 
     try {
         const response = await fetch('http://127.0.0.1:5000/connect', {
@@ -9,8 +8,10 @@ async function sendConnectionStringToPythonServer(){
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ conn_str: conn_str })
+            body: JSON.stringify({ conn_str, metadataURI })
         });
+
+        console.log('Sent to Python server:', { conn_str, metadataURI });
 
         if (response.ok) {
             console.log('Successfully connected to the database');
