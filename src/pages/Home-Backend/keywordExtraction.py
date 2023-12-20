@@ -43,8 +43,6 @@ def find_table():
 
     rows = execute_sql_query(query)
 
-    # print(f'Query: {query}')
-
     print(f'Row: {rows}')
 
 
